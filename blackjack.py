@@ -43,7 +43,7 @@ class Dealer:
 		return card
 
 
-class Game(Dealer): #Game is inheriting the Dealer class.
+class Game: #Game is inheriting the Dealer class.
 	def __init__(self):
 		pass
 
@@ -88,8 +88,6 @@ class Game(Dealer): #Game is inheriting the Dealer class.
 	def results(self):
 		#player wins, dealer wins
 		pass
-
-
 
 
 # g=Game(Player)
