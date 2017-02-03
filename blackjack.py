@@ -27,7 +27,6 @@ class Dealer:
 		pass
 		#keeps running until dealer hits 17 or higher
 
-	def 
 
 
 class Game:
