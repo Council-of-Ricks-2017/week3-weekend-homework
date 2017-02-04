@@ -82,7 +82,7 @@ class Game(Dealer): #Game is inheriting the Dealer class.
 
 	def display_total(self):
 		#shows player/dealer totals during/after each game
-		pass
+		print("Player total is: ".format(player.total))
 
 	def results(self):
 		#player wins, dealer wins
