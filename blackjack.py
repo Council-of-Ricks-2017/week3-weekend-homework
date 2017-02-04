@@ -52,8 +52,8 @@ class Turn:
 	#report to game obj, update player obj.
 	def __init__(self, player):
 		self.deck = Deck()
-		self.player = player()
-		self.dealer = dealer()
+		self.player = Player()
+		self.dealer = D ealer()
 		
 		self.rand_card()
 		self.display_cards()
@@ -101,7 +101,6 @@ class Game():
 	def compare(self):
 		#compare dealer & player totals
 		pass 
-
 	def ace_choice(self):
 		ace=(input("You have an Ace, please choose 11 or 1"))
 		if ace == "1":
