@@ -21,35 +21,38 @@ class Player:
 	def update_player_total(self):
 		if not str(self.card).isnumeric():
 			Game.convert_faces()
-		self.player_total+=int(self.card)
+		self.player_total += int(self.card)
 
 
 class Deck:
 	def __init__ (self):
 		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 		self.player = Player()
-		self.card
+		self.card = None
 
+	# How do we return rand_card to dealer_cards and player_cards?
 	def rand_card(self):
+		#Need to put if statement in here determinining if Dealer or Player is playing
 		self.card = random.choice(self.deck)
-		player.cards.append(self.card)
-		return self.card
+		self.player.cards.append(self.card)
+		print ("\n{}'s Cards: ".format(self.player.name), self.player.cards)
+		# print (self.card)
+
 
 	def convert_faces(self):
-		if card in ["J", "Q", "K"]:
-			player.player_total +=10
-		elif card == "A":
+		if self.card in ["J", "Q", "K"]:
+			player.player_total += 10
+		elif self.card == "A":
+			#This should be linked to something somewhere
 			self.ace_choice()
 
 
 class Dealer:
 	def __init__(self):
 		self.dealer_total = 0
-
-	def rand_card_dealer(self):
-		#keeps running until dealer hits 17 or higher
-		card = random.choice(self.deck)
-		return card
+		self.hit = True
+		self.card
+		self.cards = []
 
 
 class Turn:
@@ -57,8 +60,8 @@ class Turn:
 	#report to game obj, update player obj.
 	def __init__(self, player):
 		self.deck = Deck()
-		self.player = player()
-		self.dealer
+		self.player = Player()
+		self.dealer = Dealer()
 		self.rand_card()
 		self.display_cards()
 		#2 methods below should be part of display_cards() method
@@ -78,7 +81,9 @@ class Turn:
 		self.hit_or_stay()
 
 	def hit_or_stay(self):
-		print("Your total is {}, would you like to hit or stay?".format(self.player_total))
+		self.hit = input("Your total is {}, would you like to hit or stay?".format(self.player_total))
+		if self.hit == "hit":
+			return True
 
 	def calc_total(self):
 		pass
@@ -90,12 +95,13 @@ class Game:
 		#turn, dealer, and player should be in here
 		self.turn = Turn()
 		self.dealer = Dealer()
+		self.deck = Deck()
 		self.player = Player()
 		self.setup()
 
 	def set_up(self):
-		self.player = Player()
-		self.turn()
+		# self.player = Player()
+		#self.turn()
 		#dealer has to play here
 		self.compare()
 		self.results()
@@ -123,11 +129,11 @@ class Game:
 
 
 
-# g=Game(Player)
-# d=Dealer()
-p = Player()
-d = Deck()
-d.rand_card()
+# g = Game()
+# dlr = Dealer()
+# plyr = Player()
+dck = Deck()
+dck.rand_card()
 
 
 
