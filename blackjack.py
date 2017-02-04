@@ -1,6 +1,4 @@
 import random
-
-
 print ('''
 ***********************************************
 *****************  Blackjack  *****************
@@ -13,6 +11,7 @@ class Player:
 		self.player_total = 0
 		self.name = input("Enter your name: ")
 		self.hit = False
+		self.card = None
 		self.cards = []
 
 	def get_card(self):
@@ -41,16 +40,15 @@ class Deck:
 
 	def convert_faces(self):
 		if self.card in ["J", "Q", "K"]:
-			player.player_total += 10
+			self.player.player_total +=10
 		elif self.card == "A":
-			#This should be linked to something somewhere
 			self.ace_choice()
 
 
 class Dealer:
 	def __init__(self):
 		self.dealer_total = 0
-		self.hit = True
+		self.hit = True #dealer must hit if/until his total is 17 or more
 		self.card
 		self.cards = []
 
@@ -134,8 +132,6 @@ class Game:
 # plyr = Player()
 dck = Deck()
 dck.rand_card()
-
-
 
 
 
