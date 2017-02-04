@@ -1,6 +1,4 @@
 import random
-
-
 print ('''
 ***********************************************
 *****************  Blackjack  *****************
@@ -13,6 +11,7 @@ class Player:
 		self.player_total = 0
 		self.name = input("Enter your name: ")
 		self.hit = False
+		self.card
 		self.cards = []
 
 	def get_card(self):
@@ -23,6 +22,7 @@ class Player:
 			Game.convert_faces()
 		self.player_total+=int(self.card)
 		
+
 class Deck:
 	def __init__ (self):
 		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
@@ -33,19 +33,19 @@ class Deck:
 		return self.card
 
 	def convert_faces(self):
-		if card in ["J", "Q", "K"]:
+		if self.card in ["J", "Q", "K"]:
 			player.player_total +=10
-		elif card == "A":
+		elif self.card == "A":
 			self.ace_choice()
+
 
 class Dealer:
 	def __init__(self):
 		self.dealer_total = 0
+		self.hit = True #dealer must hit if/until his total is 17 or more
+		self.card
+		self.cards = []
 
-	def rand_card_dealer(self):
-		#keeps running until dealer hits 17 or higher
-		card = random.choice(self.deck)
-		return card
 
 class Turn:
 	#turn object should give player options/manage the turn
@@ -53,7 +53,8 @@ class Turn:
 	def __init__(self, player):
 		self.deck = Deck()
 		self.player = player()
-		self.dealer
+		self.dealer = dealer()
+		
 		self.rand_card()
 		self.display_cards()
 			#methods below should be part of display_cards() method
@@ -73,7 +74,10 @@ class Turn:
 			self.hit_or_stay()
 
 	def hit_or_stay(self):
-		print("Your total is {}, would you like to hit or stay?".format(self.player_total))
+		self.hit = input("Your total is {}, would you like to hit or stay?")format(self.player_total)
+		if input == "hit":
+			return self.hit = True
+
 
 	def calc_total(self):
 		pass
@@ -120,10 +124,3 @@ class Game():
 # d=Dealer()
 p=Player()
 p.rand_card_player()
-
-
-
-
-
-
-
