@@ -11,16 +11,11 @@ class Player:
 		self.player_total = 0
 		self.name = input("Enter your name: ")
 		self.hit = False
-		self.card = None
+		# self.card = None
 		self.cards = []
 
 	def get_card(self):
 		pass
-
-	def update_player_total(self):
-		if not str(self.card).isnumeric():
-			Game.convert_faces()
-		self.player_total += int(self.card)
 
 
 class Deck:
@@ -28,35 +23,36 @@ class Deck:
 		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 		self.player = Player()
 		self.dealer = Dealer()
-		self.card = None
+		self.dealer_card = None
+		self.player_card = None
 		# self.turn_count
 
 	# How do we return rand_card to dealer_cards and player_cards?
 	def rand_card(self):
-		# if len(self.player.cards) in [0, ]
-		self.card = random.choice(self.deck)
 
-		if self.player.player_turn == True:
-			self.player.cards.append(self.card)
-		else:
-			self.dealer.cards.append(self.card)
+		self.player_card = random.choice(self.deck)
+		self.dealer_card = random.choice(self.deck)
+
+		if len(self.player.cards) in [0, 1]:
+			self.player.cards.append(self.player_card)
+			self.dealer.cards.append(self.dealer_card)
+
+		# print ("\n{}'s Cards: ".format(self.dealer.name), self.dealer.cards)
+		# print ("{}'s Cards: ".format(self.player.name), self.player.cards, "\n")
+
+		# else:
+		# 	self.dealer.cards.append(self.card)
 
 		# print (type(len(self.player.cards)))
 		# print (self.card)
 
 
-	def convert_faces(self):
-		if self.card in ["J", "Q", "K"]:
-			self.player.player_total +=10
-		elif self.card == "A":
-			self.ace_choice()
-
-
 class Dealer:
 	def __init__(self):
+		self.name = "Dealer"
 		self.dealer_total = 0
 		self.hit = True #dealer must hit if/until his total is 17 or more
-		self.card = None
+		# self.card = None
 		self.cards = []
 
 
@@ -70,7 +66,8 @@ class Turn:
 		self.deck = Deck()
 		self.player = Player()
 		self.dealer = Dealer()
-		self.rand_card()
+		self.game = Game()
+		self.deck.rand_card()
 		# turn_count += 1
 		self.display_cards()
 		#2 methods below should be part of display_cards() method
@@ -86,14 +83,17 @@ class Turn:
 
 	def display_cards(self):
 		#graphical display of cards, figuring out value and giving to user
-		card = deck.rand_card()
+		# card = deck.rand_card()
 		# player.get_card(card) #get_card should append the card to the self.cards
-		total = self.calc_total()
-		print ("\n{}'s Cards: ".format(self.player.name), self.player.cards)
-		print(player.cards, total)
+		dealer_total = self.calc_dealer_total()
+		player_total = self.calc_player_total()
+		print ("\n{}'s Cards:\t".format(self.dealer.name), self.dealer.cards, "\t", dealer_total)
+		print ("\n{}'s Cards:\t".format(self.player.name), self.player.cards, "\t", player_total, "\n")
+		# print(player.cards, total)
+
 		#keep this here or in __init__?, need if function to trigger
-		if player_turn == True:
-			self.hit_or_stay()
+		# if player_turn == True:
+		# 	self.hit_or_stay()
 
 	def hit_or_stay(self):
 		self.hit = input("Your total is {}, would you like to hit or stay?".format(self.player_total))
@@ -103,10 +103,25 @@ class Turn:
 		else:
 			player_turn = False
 
-	def calc_total(self):
-		pass
-		#takes player cards and give it back to player
-		#updata_player_total is in the player class, should update total be one method use by both dealer and player?
+	def calc_dealer_total(self):
+		for card in self.dealer.cards:
+			if not str(card).isnumeric():
+				card_value = self.game.convert_faces(card)
+				self.dealer.player_total += int(card_value)
+				return self.dealer.player_total
+			else:
+				self.dealer.player_total += card
+				return self.player.player_total
+
+	def calc_player_total(self):
+		for card in self.player.cards:
+			if not str(card).isnumeric():
+				card_value = self.game.convert_faces(card)
+				self.player.player_total += int(card_value)
+				return self.player.player_total
+			else:
+				self.player.player_total += card
+				return self.player.player_total
 
 
 class Game:
@@ -116,14 +131,21 @@ class Game:
 		self.dealer = Dealer()
 		self.deck = Deck()
 		self.player = Player()
-		self.setup()
+		# self.Turn()
+		self.set_up()
 
 	def set_up(self):
-		# self.player = Player()
-		#self.turn() ## this should be first in the set_up method
+		self.Turn() ## this should be first in the set_up method
 		#dealer has to play here
+		#Add turn methods here???????????
 		self.compare()
 		self.results()
+
+	def convert_faces(self, card):
+		if card in ["J", "Q", "K"]:
+			return 10
+		elif card == "A":
+			return self.ace_choice()
 
 	def compare(self):
 		#compare dealer & player totals
@@ -133,9 +155,9 @@ class Game:
 		#Add verification
 		ace = (input("You have an Ace, please choose 11 or 1"))
 		if ace == "1":
-			player.player_total +=1
+			return 1
 		else:
-			player.player_total +=11
+			return 11
 
 	def display_total(self):
 		#shows player/dealer totals during/after each game
@@ -148,11 +170,11 @@ class Game:
 
 
 
-# g = Game()
+Game()
 # dlr = Dealer()
 # plyr = Player()
-dck = Deck()
-dck.rand_card()
+# dck = Deck()
+# dck.rand_card()
 
 
 
