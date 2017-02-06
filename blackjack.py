@@ -14,35 +14,6 @@ class Player:
 		self.cards = []
 
 
-class Deck:
-	def __init__ (self):
-		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
-		# return self.deck
-		# self.player = Player()
-		# self.dealer = Dealer()
-		# self.dealer_c/rd = None
-		# self.turn_count
-
-	# How do we return rand_card to dealer_cards and player_cards?
-	# def player_rand_card(self):
-	# 	self.player_card = random.choice(self.deck)
-	# 	self.player.cards.append(self.player_card)
-	# 	return self.player.cards
-
-	# 	# if len(self.player.cards) in [0, 1]:
-	# 	# 	self.player.cards.append(self.player_card)
-	# 	# 	self.dealer.cards.append(self.dealer_card)
-
-	# def dealer_rand_card(self):
-	# 	self.dealer_card = random.choice(self.deck)
-	# 	self.dealer.cards.append(self.dealer_card)
-	# 	return self.dealer.cards
-
-		# if len(self.player.cards) in [0, 1]:
-		# 	self.player.cards.append(self.player_card)
-		# 	self.dealer.cards.append(self.dealer_card)
-
-
 class Dealer:
 	def __init__(self):
 		self.name = "Dealer"
@@ -60,6 +31,7 @@ class Turn:
 	#Maybe turn should count turns to track player/dealer turns
 	def __init__(self):
 		self.hit = None
+		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 		self.dealer_card = None
 		self.player_card = None
 		# self.deck = Deck()
@@ -83,7 +55,7 @@ class Turn:
 		#output
 
 	def player_rand_card(self):
-		self.player_card = random.choice(Deck())
+		self.player_card = random.choice(self.deck)
 		self.player.cards.append(self.player_card)
 		return self.player.cards
 
@@ -104,7 +76,7 @@ class Turn:
 		self.dealer.dealer_total = self.calc_dealer_total()
 		self.player.player_total = self.calc_player_total()
 		print ("\n{}'s Cards:\t".format(self.dealer.name), self.dealer.cards, "\t", self.dealer.dealer_total)
-		print ("\n{}'s Cards:\t".format(self.player.name), self.player.cards, "\t", self.player.player_total, "\n")
+		print ("{}'s Cards:\t".format(self.player.name), self.player.cards, "\t", self.player.player_total, "\n")
 		# print(player.cards, total)
 
 		#keep this here or in __init__?, need if function to trigger
@@ -122,17 +94,17 @@ class Turn:
 	def calc_dealer_total(self):
 		for card in self.dealer.cards:
 			if not str(card).isnumeric():
-				card_value = self.game.convert_faces(card)
-				self.dealer.player_total += int(card_value)
-				return self.dealer.player_total
+				card_value = Game.convert_faces(card)
+				self.dealer.dealer_total += int(card_value)
+				return self.dealer.dealer_total
 			else:
-				self.dealer.player_total += card
-				return self.player.player_total
+				self.dealer.dealer_total += card
+				return self.dealer.dealer_total
 
 	def calc_player_total(self):
 		for card in self.player.cards:
 			if not str(card).isnumeric():
-				card_value = self.game.convert_faces(card)
+				card_value = Game.convert_faces(card)
 				self.player.player_total += int(card_value)
 				return self.player.player_total
 			else:
@@ -188,6 +160,37 @@ g = Game()
 # dck.rand_card()
 
 
+
+
+
+
+# class Deck:
+# 	def __init__ (self):
+# 		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+		# return self.deck
+		# self.player = Player()
+		# self.dealer = Dealer()
+		# self.dealer_c/rd = None
+		# self.turn_count
+
+	# How do we return rand_card to dealer_cards and player_cards?
+	# def player_rand_card(self):
+	# 	self.player_card = random.choice(self.deck)
+	# 	self.player.cards.append(self.player_card)
+	# 	return self.player.cards
+
+	# 	# if len(self.player.cards) in [0, 1]:
+	# 	# 	self.player.cards.append(self.player_card)
+	# 	# 	self.dealer.cards.append(self.dealer_card)
+
+	# def dealer_rand_card(self):
+	# 	self.dealer_card = random.choice(self.deck)
+	# 	self.dealer.cards.append(self.dealer_card)
+	# 	return self.dealer.cards
+
+		# if len(self.player.cards) in [0, 1]:
+		# 	self.player.cards.append(self.player_card)
+		# 	self.dealer.cards.append(self.dealer_card)
 
 
 
