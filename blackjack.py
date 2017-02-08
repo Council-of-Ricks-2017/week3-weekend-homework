@@ -1,4 +1,7 @@
 import random
+import time
+
+
 print ('''
 ***********************************************
 *****************  Blackjack  *****************
@@ -29,8 +32,9 @@ class Turn:
 	# turn_count
 	#If turns = 1, 3, 5+.. then = player; else 2, 4, after player 5+ turns = dealer
 	#Maybe turn should count turns to track player/dealer turns
-	def __init__(self):
+	def __init__(self, card=None):
 		self.hit = None
+		self.card = card
 		self.deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 		self.dealer_card = None
 		self.player_card = None
@@ -39,6 +43,7 @@ class Turn:
 		self.dealer = Dealer()
 		self.player_rand_card()
 		self.dealer_rand_card()
+		self.convert_faces(card)
 		# self.set_up()
 		# turn_count += 1
 		self.display_cards()
@@ -47,7 +52,7 @@ class Turn:
 			# self.display_total()
 
 		#Hit or stay should only run after 4 cards dealt
-		self.hit_or_stay()
+		# self.hit_or_stay()
 		# self.set_up()
 
 		#outcome/compare to see if bust
@@ -75,64 +80,14 @@ class Turn:
 		# player.get_card(card) #get_card should append the card to the self.cards
 		self.dealer.dealer_total = self.calc_dealer_total()
 		self.player.player_total = self.calc_player_total()
-		print ("\n{}'s Cards:\t".format(self.dealer.name), self.dealer.cards, "\t", self.dealer.dealer_total)
+		print ("\n\t\tCards\tTotals")
+		print ("{}'s Cards:\t".format(self.dealer.name), self.dealer.cards, "\t", self.dealer.dealer_total)
 		print ("{}'s Cards:\t".format(self.player.name), self.player.cards, "\t", self.player.player_total, "\n")
 		# print(player.cards, total)
 
 		#keep this here or in __init__?, need if function to trigger
 		# if player_turn == True:
 		# 	self.hit_or_stay()
-
-	def hit_or_stay(self):
-		self.hit = input("Your total is {}, would you like to hit or stay?".format(self.player.player_total))
-		if self.hit == "hit":
-			self.rand_card()
-			player_turn = True
-		else:
-			player_turn = False
-
-	def calc_dealer_total(self):
-		for card in self.dealer.cards:
-			if not str(card).isnumeric():
-				card_value = Game.convert_faces(card)
-				self.dealer.dealer_total += int(card_value)
-				return self.dealer.dealer_total
-			else:
-				self.dealer.dealer_total += card
-				return self.dealer.dealer_total
-
-	def calc_player_total(self):
-		for card in self.player.cards:
-			if not str(card).isnumeric():
-				card_value = Game.convert_faces(card)
-				self.player.player_total += int(card_value)
-				return self.player.player_total
-			else:
-				self.player.player_total += card
-				return self.player.player_total
-
-
-class Game:
-	def __init__(self):
-		#turn, dealer, and player should be in here
-		# self.deck = Deck() #Do i need this here?
-		self.turn = Turn()
-		self.set_up()
-
-	def set_up(self):
-		self.turn
-		self.compare()
-		self.results()
-
-	def convert_faces(self, card):
-		if card in ["J", "Q", "K"]:
-			return 10
-		elif card == "A":
-			return self.ace_choice()
-
-	def compare(self):
-		#compare dealer & player totals
-		pass
 
 	def ace_choice(self):
 		#Add verification
@@ -141,6 +96,72 @@ class Game:
 			return 1
 		else:
 			return 11
+
+	def convert_faces(self, card):
+		if self.card in ["J", "Q", "K"]:
+			return 10
+		elif self.card == "A":
+			return self.ace_choice()
+
+
+	# def hit_or_stay(self):
+	# 	self.hit = input("Your total is {}, would you like to hit or stay?".format(self.player.player_total))
+	# 	if self.hit == "hit":
+	# 		return self.player_rand_card()
+	# 	else:
+	# 		#Call dealer turn here
+	# 		player_turn = False
+
+	def calc_dealer_total(self):
+		for card in self.dealer.cards:
+			if isinstance(card, int):
+				self.dealer.dealer_total += card
+				return self.dealer.dealer_total
+			else:
+				self.dealer.dealer_total += self.convert_faces(card)
+				return self.dealer.dealer_total
+
+	#Make this likethe calc_dealer_total method
+	def calc_player_total(self):
+		for card in self.player.cards:
+			if not card.isnumeric():
+				# card_value = self.convert_faces(card)
+				self.player.player_total += self.convert_faces(card)
+				return self.player.player_total
+			else:
+				self.player.player_total += card
+				return self.player.player_total
+
+
+class Game:
+	def __init__(self):
+		self.turn = Turn()
+		self.set_up()
+
+	def set_up(self):
+		self.turn
+		# self.hit_or_stay()
+		self.turn.player_rand_card()
+		self.turn.dealer_rand_card()
+		# self.set_up()
+		# turn_count += 1
+		self.turn.display_cards()
+		self.compare()
+		self.results()
+
+	def hit_or_stay(self):
+		self.hit = input("Your total is {}, would you like to hit or stay?".format(Player.player_total))
+		if self.hit == "hit":
+			return self.player_rand_card()
+		else:
+			#Call dealer turn here
+			player_turn = False
+
+	def compare(self):
+		#compare dealer & player totals
+		pass
+
+
 
 	def display_total(self):
 		#shows player/dealer totals during/after each game
